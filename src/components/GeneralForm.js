@@ -4,11 +4,14 @@ import { basicSchema } from '../schemas';
 
 const GeneralForm = () => {
 
-    const onSubmit = (values, actions) => {
-
+    const onSubmit = async (values, actions) => {
+        await new Promise((resolve) => {
+            setTimeout(resolve, 1000)
+        });
+        actions.resetForm();
     }
 
-    const {values, errors, handleChange, handleSubmit} = useFormik({
+    const {values, errors, isSubmitting, handleChange, handleSubmit} = useFormik({
         initialValues: {
             email: '',
             age: '',
@@ -38,10 +41,10 @@ const GeneralForm = () => {
         </div>
         <div className='inputDiv'>
             <label>Sifre tekrari</label>
-            <input type="email" value={values.confirmPassword} id='confirmPassword' placeholder='Sifrenizi tekrar giriniz...' onChange={handleChange} className={errors.confirmPassword ? 'input-error' : ''} />
+            <input type="password" value={values.confirmPassword} id='confirmPassword' placeholder='Sifrenizi tekrar giriniz...' onChange={handleChange} className={errors.confirmPassword ? 'input-error' : ''} />
             {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
         </div>
-        <button type='submit'>Kaydet</button>
+        <button disabled={isSubmitting} type='submit'>Kaydet</button>
     </form>
   )
 }
